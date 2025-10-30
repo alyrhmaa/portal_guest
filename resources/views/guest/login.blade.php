@@ -14,8 +14,8 @@
     <form action="{{ route('login') }}" method="POST" class="w-50 mx-auto">
         @csrf
         <div class="mb-3">
-            <label>Username</label>
-            <input type="text" name="username" class="form-control" required>
+            <label>Email</label>
+            <input type="text" name="email" class="form-control" required>
         </div>
 
         <div class="mb-3">
