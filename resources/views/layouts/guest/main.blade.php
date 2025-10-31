@@ -2,13 +2,13 @@
 <html lang="en">
 
 {{-- Start css ---}}
-@include('layouts.css')
+@include('layouts.guest.css')
 {{-- End css --}}
 
 <body class="@yield('body-class', 'index-page')">
 
 {{-- Header --}}
-@include('layouts.header')
+@include('layouts.guest.header')
 {{-- End Header --}}
 
 {{-- Main content --}}
@@ -18,11 +18,11 @@
 {{-- End Main content --}}
 
 {{-- Footer --}}
-@include('layouts.footer')
+@include('layouts.guest.footer')
 {{-- End Footer --}}
 
 {{-- Start JS --}}
-@include('layouts.js')
+@include('layouts.guest.js')
 {{-- End JS --}}
 </body>
 </html>

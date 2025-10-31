@@ -1,11 +1,24 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\AuthController;
 
 // ROUTES UNTUK HALAMAN TAMU (GUEST)
-Route::get('/', [GuestController::class, 'dashboard'])->name('dashboard');
+Route::get('/', function () {
+    // Jika user SUDAH login → arahkan ke halaman login admin
+    if (Auth::check()) {
+        return redirect()->route('login'); // arahkan ke halaman login
+        // kalau mau ke dashboard admin ubah ke: return redirect()->route('dashboard');
+    }
+
+    // Jika BELUM login → tampilkan halaman beranda (guest)
+    return view('guest.beranda');
+})->name('beranda');
+
+Route::get('/', [GuestController::class, 'beranda'])->name('beranda');
+
 Route::get('/profil', [GuestController::class, 'profil'])->name('profil.index');
 Route::get('/kategori', [GuestController::class, 'kategori'])->name('kategori.index');
 Route::get('/berita', [GuestController::class, 'berita'])->name('berita.index');
@@ -21,6 +34,9 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
+Route::get('/about', function () {
+    return view('pages.guest.about');
+})->name('about');
 // ====================================================
 // ✳️ CRUD DATA WARGA — tampil di halaman Home
 // ====================================================

@@ -9,53 +9,77 @@ use Illuminate\Support\Str;
 
 class GuestController extends Controller
 {
-    public function dashboard()
+    // ==========================
+    // 🌸 HALAMAN BERANDA (HOME)
+    // ==========================
+    public function beranda()
     {
-        $warga = Warga::all(); // ambil semua data dari tabel warga
-        return view('guest.dashboard', compact('warga'));
+        return view('pages.guest.beranda');
     }
 
+    // ==========================
+    // 🌸 HALAMAN PROFIL DESA
+    // ==========================
     public function profil()
     {
-        return view('guest.profil');
+        return view('pages.guest.profil');
     }
 
+    public function about()
+{
+    return view('pages.guest.about');
+}
+
+    // ==========================
+    // 🌸 HALAMAN KATEGORI BERITA
+    // ==========================
     public function kategori()
     {
         $kategori = KategoriBerita::all();
 
-        // Hitung jumlah kategori & berita
         $totalKategori = KategoriBerita::count();
-        $totalBerita = 0; // nanti diisi kalau sudah ada model Berita
-        $beritaBulanIni = 0; // sementara kosong juga
+        $totalBerita = 0; // sementara kosong
+        $beritaBulanIni = 0;
 
-        return view('guest.kategori', compact('kategori', 'totalKategori', 'totalBerita', 'beritaBulanIni'));
+        return view('pages.guest.kategori', compact('kategori', 'totalKategori', 'totalBerita', 'beritaBulanIni'));
     }
 
+    // ==========================
+    // 🌸 HALAMAN BERITA
+    // ==========================
     public function berita()
     {
-        return view('guest.berita');
+        return view('pages.guest.berita');
     }
 
+    // ==========================
+    // 🌸 HALAMAN AGENDA
+    // ==========================
     public function agenda()
     {
-        return view('guest.agenda');
+        return view('pages.guest.agenda');
     }
 
+    // ==========================
+    // 🌸 HALAMAN GALERI
+    // ==========================
     public function galeri()
     {
-        return view('guest.galeri');
+        return view('pages.guest.galeri');
     }
 
+    // ==========================
+    // 🌸 CRUD DATA WARGA
+    // ==========================
     public function warga()
     {
         $warga = Warga::all();
-        return view('guest.warga', compact('warga'));
+        return view('pages.guest.warga', compact('warga'));
     }
 
     public function wargaTambah()
     {
-        return view('guest.warga-tambah');
+        return view('pages.guest.warga-tambah');
     }
 
     public function wargaSimpan(Request $request)
@@ -70,14 +94,13 @@ class GuestController extends Controller
 
         Warga::create($request->all());
 
-        // Ubah redirect ke 'dashboard' karena data warga ditampilkan di halaman utama
         return redirect()->route('dashboard')->with('success', 'Data warga berhasil ditambahkan!');
     }
 
     public function wargaEdit($id)
     {
         $warga = Warga::findOrFail($id);
-        return view('guest.warga-edit', compact('warga'));
+        return view('pages.guest.warga-edit', compact('warga'));
     }
 
     public function wargaUpdate(Request $request, $id)
@@ -102,9 +125,12 @@ class GuestController extends Controller
         return redirect()->route('dashboard')->with('success', 'Data warga berhasil dihapus!');
     }
 
+    // ==========================
+    // 🌸 CRUD KATEGORI BERITA
+    // ==========================
     public function kategoriTambah()
     {
-        return view('guest.kategori-tambah');
+        return view('pages.guest.kategori-tambah');
     }
 
     public function kategoriSimpan(Request $request)
@@ -126,7 +152,7 @@ class GuestController extends Controller
     public function kategoriEdit($id)
     {
         $kategori = KategoriBerita::findOrFail($id);
-        return view('guest.kategori-edit', compact('kategori'));
+        return view('pages.guest.kategori-edit', compact('kategori'));
     }
 
     public function kategoriUpdate(Request $request, $id)

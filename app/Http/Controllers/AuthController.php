@@ -12,13 +12,13 @@ class AuthController extends Controller
     // ✅ Tampilkan form register
     public function showRegister()
     {
-        return view('guest.register');
+         return view('pages.auth.register');
     }
 
     // ✅ Tampilkan form login
     public function showLogin()
     {
-        return view('guest.login');
+        return view('pages.auth.login');
     }
 
     // ✅ Proses register
