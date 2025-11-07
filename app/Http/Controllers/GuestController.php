@@ -14,7 +14,8 @@ class GuestController extends Controller
     // ==========================
     public function beranda()
     {
-        return view('pages.guest.beranda');
+        $warga = \App\Models\Warga::all();
+        return view('pages.guest.beranda', compact('warga'));
     }
 
     // ==========================
@@ -41,7 +42,7 @@ class GuestController extends Controller
         $totalBerita = 0; // sementara kosong
         $beritaBulanIni = 0;
 
-        return view('pages.guest.kategori', compact('kategori', 'totalKategori', 'totalBerita', 'beritaBulanIni'));
+        return view('pages.kategori-berita.index', compact('kategori', 'totalKategori', 'totalBerita', 'beritaBulanIni'));
     }
 
     // ==========================
@@ -68,69 +69,13 @@ class GuestController extends Controller
         return view('pages.guest.galeri');
     }
 
-    // ==========================
-    // 🌸 CRUD DATA WARGA
-    // ==========================
-    public function warga()
-    {
-        $warga = Warga::all();
-        return view('pages.guest.warga', compact('warga'));
-    }
-
-    public function wargaTambah()
-    {
-        return view('pages.guest.warga-tambah');
-    }
-
-    public function wargaSimpan(Request $request)
-    {
-        $request->validate([
-            'no_ktp' => 'required|unique:warga',
-            'nama' => 'required',
-            'jenis_kelamin' => 'required',
-            'agama' => 'required',
-            'pekerjaan' => 'required',
-        ]);
-
-        Warga::create($request->all());
-
-        return redirect()->route('dashboard')->with('success', 'Data warga berhasil ditambahkan!');
-    }
-
-    public function wargaEdit($id)
-    {
-        $warga = Warga::findOrFail($id);
-        return view('pages.guest.warga-edit', compact('warga'));
-    }
-
-    public function wargaUpdate(Request $request, $id)
-    {
-        $warga = Warga::findOrFail($id);
-        $request->validate([
-            'no_ktp' => 'required|unique:warga,no_ktp,' . $id . ',warga_id',
-            'nama' => 'required',
-            'jenis_kelamin' => 'required',
-            'agama' => 'required',
-            'pekerjaan' => 'required',
-        ]);
-
-        $warga->update($request->all());
-        return redirect()->route('dashboard')->with('success', 'Data warga berhasil diperbarui!');
-    }
-
-    public function wargaHapus($id)
-    {
-        $warga = Warga::findOrFail($id);
-        $warga->delete();
-        return redirect()->route('dashboard')->with('success', 'Data warga berhasil dihapus!');
-    }
 
     // ==========================
     // 🌸 CRUD KATEGORI BERITA
     // ==========================
     public function kategoriTambah()
     {
-        return view('pages.guest.kategori-tambah');
+        return view('pages.kategori-berita.create');
     }
 
     public function kategoriSimpan(Request $request)
@@ -152,7 +97,7 @@ class GuestController extends Controller
     public function kategoriEdit($id)
     {
         $kategori = KategoriBerita::findOrFail($id);
-        return view('pages.guest.kategori-edit', compact('kategori'));
+        return view('pages.kategori-berita.edit', compact('kategori'));
     }
 
     public function kategoriUpdate(Request $request, $id)

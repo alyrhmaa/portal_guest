@@ -4,18 +4,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\WargaController;
 
-// ROUTES UNTUK HALAMAN TAMU (GUEST)
-Route::get('/', function () {
-    // Jika user SUDAH login → arahkan ke halaman login admin
-    if (Auth::check()) {
-        return redirect()->route('login'); // arahkan ke halaman login
-        // kalau mau ke dashboard admin ubah ke: return redirect()->route('dashboard');
-    }
-
-    // Jika BELUM login → tampilkan halaman beranda (guest)
-    return view('guest.beranda');
-})->name('beranda');
 
 Route::get('/', [GuestController::class, 'beranda'])->name('beranda');
 
@@ -42,19 +32,21 @@ Route::get('/about', function () {
 // ====================================================
 
 // Form tambah warga
-Route::get('/warga/tambah', [GuestController::class, 'wargaTambah'])->name('warga.tambah');
+Route::get('/warga', [WargaController::class, 'warga'])->name('warga.index');
+
+Route::get('/warga/tambah', [WargaController::class, 'wargaTambah'])->name('warga.tambah');
 
 // Simpan data baru
-Route::post('/warga/simpan', [GuestController::class, 'wargaSimpan'])->name('warga.simpan');
+Route::post('/warga/simpan', [WargaController::class, 'wargaSimpan'])->name('warga.simpan');
 
 // Edit data warga
-Route::get('/warga/edit/{id}', [GuestController::class, 'wargaEdit'])->name('warga.edit');
+Route::get('/warga/edit/{id}', [WargaController::class, 'wargaEdit'])->name('warga.edit');
 
 // Update data warga
-Route::post('/warga/update/{id}', [GuestController::class, 'wargaUpdate'])->name('warga.update');
+Route::post('/warga/update/{id}', [WargaController::class, 'wargaUpdate'])->name('warga.update');
 
 // Hapus data warga
-Route::delete('/warga/hapus/{id}', [GuestController::class, 'wargaHapus'])->name('warga.hapus');
+Route::delete('/warga/hapus/{id}', [WargaController::class, 'wargaHapus'])->name('warga.hapus');
 
 
 // CRUD Kategori Berita
@@ -64,3 +56,4 @@ Route::post('/kategori/simpan', [GuestController::class, 'kategoriSimpan'])->nam
 Route::get('/kategori/edit/{id}', [GuestController::class, 'kategoriEdit'])->name('kategori.edit');
 Route::post('/kategori/update/{id}', [GuestController::class, 'kategoriUpdate'])->name('kategori.update');
 Route::get('/kategori/hapus/{id}', [GuestController::class, 'kategoriHapus'])->name('kategori.hapus');
+
