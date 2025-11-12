@@ -1,23 +1,34 @@
 @extends('layouts.guest.main')
 
 @section('content')
+
+<!-- Banner Section -->
+<div class="about-banner"
+     style="
+        background: url('https://akcdn.detik.net.id/visual/2021/04/09/desa-dieng-di-wonosobo_169.jpeg?w=1200') center center / cover no-repeat;
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+     ">
+    <div style="background: rgba(0,0,0,0.4); padding: 20px 40px; border-radius: 10px;">
+        <h1 class="fw-bold display-3">Tentang Portal Desa</h1>
+    </div>
+</div>
+
+<!-- Konten Utama -->
 <div class="container py-5">
     <div class="text-center mb-4">
-        <h1 class="fw-bold text-primary">
+        <h2 class="fw-bold text-primary">
             <i class="fa-solid fa-circle-info"></i> Tentang Portal Desa
-        </h1>
+        </h2>
         <p class="text-muted">Menjelaskan tujuan, alur, dan manfaat dari portal ini.</p>
     </div>
 
     <div class="row justify-content-center align-items-center">
-        <div class="col-md-6">
-            {{-- Pastikan gambar ini ada di public/images/about-desa.jpg --}}
-            <img src="{{ asset('images/team/about-desa.jpg') }}"
-                 alt="Tentang Desa"
-                 class="img-fluid rounded shadow"
-                 style="max-width: 100%; height: auto; border: 3px solid #f8b6cc;">
-        </div>
-
         <div class="col-md-6">
             <h3 class="fw-semibold">
                 <i class="fa-solid fa-seedling text-success"></i> Tujuan

@@ -14,8 +14,9 @@ class GuestController extends Controller
     // ==========================
     public function beranda()
     {
-        $warga = \App\Models\Warga::all();
-        return view('pages.guest.beranda', compact('warga'));
+
+    $warga = Warga::all(); // ambil semua data warga
+    return view('pages.beranda', compact('warga'));
     }
 
     // ==========================
@@ -23,12 +24,12 @@ class GuestController extends Controller
     // ==========================
     public function profil()
     {
-        return view('pages.guest.profil');
+        return view('pages.profil');
     }
 
     public function about()
 {
-    return view('pages.guest.about');
+    return view('pages.about');
 }
 
     // ==========================
@@ -50,7 +51,7 @@ class GuestController extends Controller
     // ==========================
     public function berita()
     {
-        return view('pages.guest.berita');
+        return view('pages.berita');
     }
 
     // ==========================
@@ -58,7 +59,7 @@ class GuestController extends Controller
     // ==========================
     public function agenda()
     {
-        return view('pages.guest.agenda');
+        return view('pages.agenda');
     }
 
     // ==========================
@@ -66,7 +67,7 @@ class GuestController extends Controller
     // ==========================
     public function galeri()
     {
-        return view('pages.guest.galeri');
+        return view('pages.galeri');
     }
 
 

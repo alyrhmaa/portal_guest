@@ -10,7 +10,7 @@ class WargaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function warga()
+    public function index()
     {
         $warga = Warga::all();
         return view('pages.warga.index', compact('warga'));

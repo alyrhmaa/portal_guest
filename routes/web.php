@@ -7,8 +7,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\WargaController;
 
 
-Route::get('/', [GuestController::class, 'beranda'])->name('beranda');
-
 Route::get('/profil', [GuestController::class, 'profil'])->name('profil.index');
 Route::get('/kategori', [GuestController::class, 'kategori'])->name('kategori.index');
 Route::get('/berita', [GuestController::class, 'berita'])->name('berita.index');
@@ -25,27 +23,17 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
 Route::get('/about', function () {
-    return view('pages.guest.about');
+    return view('about');
 })->name('about');
-// ====================================================
-// ✳️ CRUD DATA WARGA — tampil di halaman Home
-// ====================================================
 
-// Form tambah warga
-Route::get('/warga', [WargaController::class, 'warga'])->name('warga.index');
 
+// CRUD Form tambah warga
+Route::get('/', [WargaController::class, 'index'])->name('beranda');
+Route::get('/warga', [WargaController::class, 'index'])->name('warga.index');
 Route::get('/warga/tambah', [WargaController::class, 'wargaTambah'])->name('warga.tambah');
-
-// Simpan data baru
 Route::post('/warga/simpan', [WargaController::class, 'wargaSimpan'])->name('warga.simpan');
-
-// Edit data warga
 Route::get('/warga/edit/{id}', [WargaController::class, 'wargaEdit'])->name('warga.edit');
-
-// Update data warga
-Route::post('/warga/update/{id}', [WargaController::class, 'wargaUpdate'])->name('warga.update');
-
-// Hapus data warga
+Route::put('/warga/update/{id}', [WargaController::class, 'wargaUpdate'])->name('warga.update');
 Route::delete('/warga/hapus/{id}', [WargaController::class, 'wargaHapus'])->name('warga.hapus');
 
 
