@@ -10,6 +10,11 @@ class WargaController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function beranda()
+    {
+        return view('pages.beranda'); // tampilkan beranda khusus
+    }
+
     public function index()
     {
         $warga = Warga::all();

@@ -25,4 +25,4 @@
 @include('layouts.guest.js')
 {{-- End JS --}}
 </body>
-</html>
+</html>xdgxdxgxg

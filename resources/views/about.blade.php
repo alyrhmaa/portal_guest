@@ -50,4 +50,71 @@
         </div>
     </div>
 </div>
+<a href="https://wa.me/6285194727600?text=Halo%20Admin%20Desa,%20saya%20ingin%20bertanya%20tentang%20portal%20desa."
+   class="whatsapp-float"
+   target="_blank"
+   title="Chat via WhatsApp">
+   <i class="bi bi-whatsapp"></i>
+</a>
+
+<style>
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.btn-primary, .btn-outline-primary {
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover, .btn-outline-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(74, 123, 200, 0.3);
+}
+
+/* 🌿 Floating WhatsApp Style */
+.whatsapp-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 25px;
+    right: 25px;
+    background-color: #25d366;
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 32px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 999;
+    transition: all 0.3s ease;
+    animation: floatIn 0.7s ease-out;
+}
+
+.whatsapp-float:hover {
+    background-color: #20ba5a;
+    transform: scale(1.1);
+}
+
+.whatsapp-float i {
+    margin-top: 14px;
+}
+
+/* Animasi muncul halus dari bawah */
+@keyframes floatIn {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
 @endsection

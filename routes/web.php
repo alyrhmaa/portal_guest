@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\WargaController;
+use App\Http\Controllers\UserController;
+
 
 
 Route::get('/profil', [GuestController::class, 'profil'])->name('profil.index');
@@ -28,7 +30,7 @@ Route::get('/about', function () {
 
 
 // CRUD Form tambah warga
-Route::get('/', [WargaController::class, 'index'])->name('beranda');
+Route::get('/', [WargaController::class, 'beranda'])->name('beranda');
 Route::get('/warga', [WargaController::class, 'index'])->name('warga.index');
 Route::get('/warga/tambah', [WargaController::class, 'wargaTambah'])->name('warga.tambah');
 Route::post('/warga/simpan', [WargaController::class, 'wargaSimpan'])->name('warga.simpan');
@@ -44,4 +46,12 @@ Route::post('/kategori/simpan', [GuestController::class, 'kategoriSimpan'])->nam
 Route::get('/kategori/edit/{id}', [GuestController::class, 'kategoriEdit'])->name('kategori.edit');
 Route::post('/kategori/update/{id}', [GuestController::class, 'kategoriUpdate'])->name('kategori.update');
 Route::get('/kategori/hapus/{id}', [GuestController::class, 'kategoriHapus'])->name('kategori.hapus');
+
+// PROFIL DESA
+Route::get('/profil/desa', [GuestController::class, 'profil'])->name('profil.desa');
+
+// PROFIL USER
+Route::get('/profil/user', [UserController::class, 'profil'])->name('profil.user');
+Route::get('/profil/user/edit', [UserController::class, 'edit'])->name('profil.edit');
+Route::post('/profil/user/update', [UserController::class, 'update'])->name('profil.update');
 

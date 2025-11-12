@@ -52,9 +52,10 @@ class AuthController extends Controller
     $user = User::where('email', $request->email)->first();
 
     if ($user && Hash::check($request->password, $user->password)) {
-        Session::put('user', $user);
-        return redirect()->route('profil.index')->with('success', 'Login berhasil!');
-    }
+    Session::put('user', $user);
+    return redirect()->route('profil.user')->with('success', 'Login berhasil!');
+}
+
 
     return back()->with('error', 'Username atau password salah.');
     }

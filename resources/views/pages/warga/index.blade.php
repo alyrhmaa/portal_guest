@@ -1,58 +1,59 @@
 @extends('layouts.guest.main')
 
 @section('content')
-    <div class="container mt-4">
-        <h2>Data Warga</h2>
-        <a href="{{ route('warga.tambah') }}" class="btn btn-primary mb-3">+ Tambah Warga</a>
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Data Warga</h2>
 
-        @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
+    @if (session('success'))
+        <div class="alert alert-success text-center">{{ session('success') }}</div>
+    @endif
 
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>No KTP</th>
-                    <th>Nama</th>
-                    <th>Jenis Kelamin</th>
-                    <th>Agama</th>
-                    <th>Pekerjaan</th>
-                    <th>Telp</th>
-                    <th>Email</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($warga as $i => $w)
-                    <tr>
-                        <td>{{ $i + 1 }}</td>
-                        <td>{{ $w->no_ktp }}</td>
-                        <td>{{ $w->nama }}</td>
-                        <td>{{ $w->jenis_kelamin }}</td>
-                        <td>{{ $w->agama }}</td>
-                        <td>{{ $w->pekerjaan }}</td>
-                        <td>{{ $w->telp }}</td>
-                        <td>{{ $w->email }}</td>
-                        <td>
-                            <a href="{{ route('warga.edit', $w->warga_id) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{ route('warga.hapus', $w->warga_id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('Yakin hapus?')">
-                                    Hapus
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="9" class="text-center">Belum ada data warga.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-
-        </table>
+    <div class="text-center mb-4">
+        <a href="{{ route('warga.tambah') }}" class="btn btn-primary">+ Tambah Warga</a>
     </div>
+
+    @if($warga->isEmpty())
+        <div class="text-center text-muted">
+            <p>Belum ada data warga.</p>
+        </div>
+    @else
+        <div class="row">
+            @foreach ($warga as $w)
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold text-primary">{{ $w->nama }}</h5>
+                            <p class="card-text mb-1"><strong>No KTP:</strong> {{ $w->no_ktp }}</p>
+                            <p class="card-text mb-1"><strong>Jenis Kelamin:</strong> {{ $w->jenis_kelamin }}</p>
+                            <p class="card-text mb-1"><strong>Agama:</strong> {{ $w->agama }}</p>
+                            <p class="card-text mb-1"><strong>Pekerjaan:</strong> {{ $w->pekerjaan }}</p>
+                            <p class="card-text mb-1"><strong>Telp:</strong> {{ $w->telp }}</p>
+                            <p class="card-text mb-3"><strong>Email:</strong> {{ $w->email }}</p>
+
+                            <div class="d-flex justify-content-between">
+                                <a href="{{ route('warga.edit', $w->warga_id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                <form action="{{ route('warga.hapus', $w->warga_id) }}" method="POST" onsubmit="return confirm('Yakin hapus?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @endif
+</div>
+
+{{-- Tambahan animasi & efek hover agar tampil lebih modern --}}
+<style>
+.card {
+    transition: all 0.3s ease;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+</style>
 @endsection

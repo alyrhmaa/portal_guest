@@ -16,7 +16,7 @@ class GuestController extends Controller
     {
 
     $warga = Warga::all(); // ambil semua data warga
-    return view('pages.beranda', compact('warga'));
+    return view('pages.beranda');
     }
 
     // ==========================

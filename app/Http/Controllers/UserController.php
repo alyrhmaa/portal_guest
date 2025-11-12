@@ -3,62 +3,64 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    // 🧍‍♂️ Tampilkan profil user yang login
+    public function profil()
     {
-        //
+        $user = Session::get('user');
+
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Silakan login dulu!');
+        }
+
+        return view('pages.user.profil', compact('user'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    // ✏️ Form edit profil
+    public function edit()
     {
-        //
+        $user = Session::get('user');
+
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Silakan login dulu!');
+        }
+
+        return view('pages.user.edit', compact('user'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    // 💾 Simpan update profil
+    public function update(Request $request)
     {
-        //
-    }
+        $user = Session::get('user');
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Silakan login dulu!');
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'password' => 'nullable|min:4',
+        ]);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        $dbUser = User::find($user->id);
+        $dbUser->name = $request->name;
+        $dbUser->email = $request->email;
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        if ($request->filled('password')) {
+            $dbUser->password = Hash::make($request->password);
+        }
+
+        $dbUser->save();
+
+        // update juga session biar ikut ke-refresh
+        Session::put('user', $dbUser);
+
+        return redirect()->route('profil.index')->with('success', 'Profil berhasil diperbarui!');
     }
 }
