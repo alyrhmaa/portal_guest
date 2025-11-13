@@ -17,12 +17,5 @@
   </main>
 {{-- End Main content --}}
 
-{{-- Footer --}}
-@include('layouts.guest.footer')
-{{-- End Footer --}}
-
-{{-- Start JS --}}
-@include('layouts.guest.js')
-{{-- End JS --}}
 </body>
-</html>xdgxdxgxg
+</html>
