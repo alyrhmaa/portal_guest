@@ -21,7 +21,7 @@
 {{-- End Footer --}}
 
 {{-- Start JS --}}
-@include('layouts.guest.js')
+@include('layouts.guest.jsss')
 {{-- End JS --}}
 </body>
 </html>
