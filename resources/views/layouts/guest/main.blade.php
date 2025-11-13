@@ -13,7 +13,7 @@
 
 {{-- Main content --}}
   <main id="main" style="margin-top: 100px;">
-    @yield('')
+    @yield('content')
   </main>
 {{-- End Main content --}}
 {{-- Footer --}}
