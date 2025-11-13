@@ -55,3 +55,15 @@ Route::get('/profil/user', [UserController::class, 'profil'])->name('profil.user
 Route::get('/profil/user/edit', [UserController::class, 'edit'])->name('profil.edit');
 Route::post('/profil/user/update', [UserController::class, 'update'])->name('profil.update');
 
+// Tambah Data User
+Route::get('/user/tambah', [UserController::class, 'create'])->name('user.create');
+Route::post('/user/simpan', [UserController::class, 'store'])->name('user.store');
+// CRUD Data User
+Route::get('/user', [UserController::class, 'index'])->name('user.index');
+Route::get('/user/tambah', [UserController::class, 'create'])->name('user.create');
+Route::post('/user/simpan', [UserController::class, 'store'])->name('user.store');
+Route::get('/user/edit/{id}', [UserController::class, 'editUser'])->name('user.edit');
+Route::put('/user/update/{id}', [UserController::class, 'updateUser'])->name('user.update');
+Route::delete('/user/hapus/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+
+

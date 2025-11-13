@@ -1,18 +1,17 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
-use App\Models\User;
 
 class AuthController extends Controller
 {
     // ✅ Tampilkan form register
     public function showRegister()
     {
-         return view('pages.auth.register');
+        return view('pages.auth.register');
     }
 
     // ✅ Tampilkan form login
@@ -25,15 +24,15 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:users,email',
             'username' => 'required|string|max:255|unique:users,username',
             'password' => 'required|confirmed|min:4',
         ]);
 
         User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
+            'name'     => $validated['name'],
+            'email'    => $validated['email'],
             'username' => $validated['username'],
             'password' => Hash::make($validated['password']),
         ]);
@@ -44,20 +43,25 @@ class AuthController extends Controller
     // ✅ Proses login
     public function login(Request $request)
     {
-       $request->validate([
-        'email' => ['required', 'required'],
-        'password' => 'required',
-    ]);
+        $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required',
+        ]);
 
-    $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->first();
 
-    if ($user && Hash::check($request->password, $user->password)) {
-    Session::put('user', $user);
-    return redirect()->route('profil.user')->with('success', 'Login berhasil!');
-}
+        if ($user && Hash::check($request->password, $user->password)) {
+            // ✅ Simpan sesi login
+            Session::put('user', $user);
 
+            // ✅ Simpan waktu terakhir login ke database
+            $user->last_login = now();
+            $user->save();
 
-    return back()->with('error', 'Username atau password salah.');
+            return redirect()->route('user.index')->with('success', 'Berhasil login!');
+        }
+
+        return redirect()->back()->with('error', 'Email atau password salah!');
     }
 
     // ✅ Logout
