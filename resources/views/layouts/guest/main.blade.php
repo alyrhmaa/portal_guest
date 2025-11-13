@@ -13,7 +13,7 @@
 
 {{-- Main content --}}
   <main id="main" style="margin-top: 100px;">
-    @yield('content')
+    @yield('')
   </main>
 {{-- End Main content --}}
 {{-- Footer --}}
@@ -21,7 +21,7 @@
 {{-- End Footer --}}
 
 {{-- Start JS --}}
-@include('layouts.guest.jsss')
+@include('layouts.guest.js')
 {{-- End JS --}}
 </body>
 </html>
