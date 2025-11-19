@@ -7,16 +7,34 @@
 
 @stack('scripts')
 
+<!-- === FIX MOBILE NAVBAR (SESUIAIKAN DENGAN NAVBAR KAMU) === -->
 <script>
-  // === MOBILE SIDEBAR TOGGLE (PERBAIKAN HP TIDAK BISA KELUAR MENU) ===
-  document.addEventListener("DOMContentLoaded", function () {
-      const toggleBtn = document.querySelector(".mobile-nav-toggle");
-      const sidebar = document.querySelector("#sidebar");
+document.addEventListener('DOMContentLoaded', () => {
 
-      if (toggleBtn && sidebar) {
-          toggleBtn.addEventListener("click", function () {
-              sidebar.classList.toggle("active");
-          });
-      }
-  });
+    const toggleBtn = document.querySelector('.mobile-nav-toggle');
+    const navbar = document.querySelector('#navbar');
+
+    // tombol mobile harus ada
+    if (toggleBtn && navbar) {
+
+        toggleBtn.addEventListener('click', function() {
+            navbar.classList.toggle('navbar-mobile');  // tampilkan menu mobile
+
+            // ubah icon bi-list ke bi-x
+            this.classList.toggle('bi-list');
+            this.classList.toggle('bi-x');
+        });
+    }
+
+    // dropdown agar bisa dibuka di mode mobile
+    document.querySelectorAll('.navbar .dropdown > a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            if (navbar.classList.contains('navbar-mobile')) {
+                e.preventDefault();
+                this.nextElementSibling.classList.toggle('dropdown-active');
+            }
+        });
+    });
+
+});
 </script>

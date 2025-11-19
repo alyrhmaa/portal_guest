@@ -26,7 +26,7 @@
   @stack('styles')
 
   <style>
-    /* --- Dropdown Navbar Custom --- */
+    /* --- Dropdown Navbar Custom (DESKTOP) --- */
     .navbar .dropdown ul {
         display: none;
         position: absolute;
@@ -71,6 +71,44 @@
         opacity: 1;
         transform: translateY(0);
       }
+    }
+
+    /* ===========================================================
+       ===   MOBILE NAVBAR FIX (AGAR MENU MUNCUL DI HP)   =======
+       =========================================================== */
+
+    .navbar-mobile {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background: #fff;
+        padding: 20px;
+        overflow-y: auto;
+        height: calc(100vh - 60px);
+        z-index: 9999;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .navbar-mobile ul {
+        display: block !important;
+    }
+
+    .navbar-mobile li {
+        padding: 10px 0;
+    }
+
+    .navbar-mobile .dropdown ul {
+        display: none;
+        position: static;
+        background: #fff;
+        box-shadow: none;
+        padding-left: 15px;
+        margin-top: 8px;
+    }
+
+    .navbar-mobile .dropdown-active {
+        display: block !important;
     }
   </style>
 </head>
