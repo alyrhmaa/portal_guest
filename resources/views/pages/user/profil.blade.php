@@ -91,6 +91,18 @@
         transform: scale(1.05);
         box-shadow: 0 5px 15px rgba(255,255,255,0.2);
     }
+
+    /* Style khusus untuk tombol logout */
+    .btn-logout {
+        background: rgba(220, 53, 69, 0.9);
+        border: none;
+        color: white;
+    }
+
+    .btn-logout:hover {
+        background: rgba(220, 53, 69, 1);
+        color: white;
+    }
 </style>
 
 <div class="profile-section">
@@ -109,9 +121,14 @@
             <a href="{{ route('profil.edit') }}" class="btn btn-light btn-custom text-primary">
                 <i class="bi bi-pencil-square"></i> Edit Profil
             </a>
-            <a href="{{ route('logout') }}" class="btn btn-danger btn-custom">
-                <i class="bi bi-box-arrow-right"></i> Logout
-            </a>
+
+            {{-- PERBAIKAN: Ganti link dengan form untuk logout --}}
+            <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                @csrf
+                <button type="submit" class="btn btn-logout btn-custom">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </button>
+            </form>
         </div>
     </div>
 </div>

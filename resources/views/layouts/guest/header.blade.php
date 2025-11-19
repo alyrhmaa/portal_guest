@@ -10,7 +10,7 @@
                 <li>
                     <a class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}" href="{{ route('about') }}">
                         Tentang
-                    </=>
+                    </a>
                 </li>
 
                 {{-- Home (tanpa dropdown) --}}
@@ -24,7 +24,7 @@
                 {{-- Profil (tanpa dropdown) --}}
                 <li>
                     <a class="nav-link {{ request()->routeIs('profil.desa') ? 'active' : '' }}"
-                        href="{{ route('profil.desa') }}">
+                        href="{{ route('profil.index') }}">
                         Profil
                     </a>
                 </li>

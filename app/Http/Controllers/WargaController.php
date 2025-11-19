@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Warga;
@@ -17,6 +16,10 @@ class WargaController extends Controller
 
     public function index()
     {
+        if (! Session::has('user')) {
+            return redirect()->route('login')->with('error', 'Silakan login dulu');
+        }
+        
         $warga = Warga::all();
         return view('pages.warga.index', compact('warga'));
     }
@@ -35,13 +38,13 @@ class WargaController extends Controller
     public function wargaSimpan(Request $request)
     {
         $request->validate([
-            'no_ktp' => 'required|unique:warga,no_ktp',
-            'nama' => 'required',
+            'no_ktp'        => 'required|unique:warga,no_ktp',
+            'nama'          => 'required',
             'jenis_kelamin' => 'required',
-            'agama' => 'required',
-            'pekerjaan' => 'required',
-            'telp' => 'required',
-            'email' => 'required|email'
+            'agama'         => 'required',
+            'pekerjaan'     => 'required',
+            'telp'          => 'required',
+            'email'         => 'required|email',
         ]);
 
         Warga::create($request->all());

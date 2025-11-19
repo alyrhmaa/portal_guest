@@ -5,7 +5,7 @@
 <!-- Banner Section -->
 <div class="about-banner"
      style="
-        background: url('https://akcdn.detik.net.id/visual/2021/04/09/desa-dieng-di-wonosobo_169.jpeg?w=1200') center center / cover no-repeat;
+        background: url('https://i.pinimg.com/736x/fe/ff/fe/fefffebfea7b01c3ec836b2436c2fbde.jpg') center center / cover no-repeat;
         height: 100vh;
         width: 100%;
         display: flex;

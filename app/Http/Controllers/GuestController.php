@@ -1,11 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Models\Warga;
-use App\Models\KategoriBerita;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use App\Models\KategoriBerita;
+use App\Models\Berita;
 
 class GuestController extends Controller
 {
@@ -14,9 +12,7 @@ class GuestController extends Controller
     // ==========================
     public function beranda()
     {
-
-    $warga = Warga::all(); // ambil semua data warga
-    return view('pages.beranda');
+        return view('pages.beranda');
     }
 
     // ==========================
@@ -27,23 +23,30 @@ class GuestController extends Controller
         return view('pages.profil');
     }
 
+    // ==========================
+    // 🌸 HALAMAN ABOUT
+    // ==========================
     public function about()
-{
-    return view('pages.about');
-}
+    {
+        return view('pages.about');
+    }
 
     // ==========================
-    // 🌸 HALAMAN KATEGORI BERITA
+    // 🌸 HALAMAN KATEGORI (HANYA TAMPIL, BUKAN CRUD)
     // ==========================
     public function kategori()
     {
-        $kategori = KategoriBerita::all();
+        $kategori       = Kategori::withCount('berita')->get();
+        $totalKategori  = Kategori::count();
+        $totalBerita    = Berita::count();
+        $beritaBulanIni = Berita::whereMonth('created_at', now()->month)->count();
 
-        $totalKategori = KategoriBerita::count();
-        $totalBerita = 0; // sementara kosong
-        $beritaBulanIni = 0;
-
-        return view('pages.kategori-berita.index', compact('kategori', 'totalKategori', 'totalBerita', 'beritaBulanIni'));
+        return view('pages.kategori-berita.index', compact(
+            'kategori',
+            'totalKategori',
+            'totalBerita',
+            'beritaBulanIni'
+        ));
     }
 
     // ==========================
@@ -51,9 +54,18 @@ class GuestController extends Controller
     // ==========================
     public function berita()
     {
-        return view('pages.berita');
+        $berita   = Berita::with('kategori')->latest()->get();
+        $kategori = KategoriBerita::all();
+        $monthly  = Berita::whereMonth('created_at', now()->month)->count();
+
+        return view('pages.berita', compact('berita', 'kategori', 'monthly'));
     }
 
+    public function detail($id)
+    {
+        $berita = Berita::with('kategori')->findOrFail($id);
+        return view('pages.berita-detail', compact('berita'));
+    }
     // ==========================
     // 🌸 HALAMAN AGENDA
     // ==========================
@@ -68,62 +80,5 @@ class GuestController extends Controller
     public function galeri()
     {
         return view('pages.galeri');
-    }
-
-
-    // ==========================
-    // 🌸 CRUD KATEGORI BERITA
-    // ==========================
-    public function kategoriTambah()
-    {
-        return view('pages.kategori-berita.create');
-    }
-
-    public function kategoriSimpan(Request $request)
-    {
-        $request->validate([
-            'nama' => 'required',
-            'deskripsi' => 'nullable',
-        ]);
-
-        KategoriBerita::create([
-            'nama' => $request->nama,
-            'slug' => Str::slug($request->nama),
-            'deskripsi' => $request->deskripsi,
-        ]);
-
-        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil ditambahkan!');
-    }
-
-    public function kategoriEdit($id)
-    {
-        $kategori = KategoriBerita::findOrFail($id);
-        return view('pages.kategori-berita.edit', compact('kategori'));
-    }
-
-    public function kategoriUpdate(Request $request, $id)
-    {
-        $kategori = KategoriBerita::findOrFail($id);
-
-        $request->validate([
-            'nama' => 'required',
-            'deskripsi' => 'nullable',
-        ]);
-
-        $kategori->update([
-            'nama' => $request->nama,
-            'slug' => Str::slug($request->nama),
-            'deskripsi' => $request->deskripsi,
-        ]);
-
-        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil diperbarui!');
-    }
-
-    public function kategoriHapus($id)
-    {
-        $kategori = KategoriBerita::findOrFail($id);
-        $kategori->delete();
-
-        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil dihapus!');
     }
 }

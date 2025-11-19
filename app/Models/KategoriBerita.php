@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,12 +8,17 @@ class KategoriBerita extends Model
 {
     use HasFactory;
 
-    protected $table = 'kategori_berita'; // nama tabel di database
-    protected $primaryKey = 'kategori_id'; // kolom primary key
+    protected $table      = 'kategori_berita'; // nama tabel di database
+    protected $primaryKey = 'kategori_id';     // kolom primary key
 
     protected $fillable = [
         'nama',
         'slug',
         'deskripsi',
     ];
+
+    public function berita()
+    {
+        return $this->hasMany(Berita::class, 'kategori_id');
+    }
 }
