@@ -13,7 +13,7 @@
                     </a>
                 </li>
 
-                {{-- Home (tanpa dropdown) --}}
+                {{-- Home --}}
                 <li>
                     <a class="nav-link {{ request()->routeIs('beranda') ? 'active' : '' }}"
                         href="{{ route('beranda') }}">
@@ -21,42 +21,47 @@
                     </a>
                 </li>
 
-                {{-- Profil (tanpa dropdown) --}}
+                {{-- Profil --}}
                 <li>
-                    <a class="nav-link {{ request()->routeIs('profil.desa') ? 'active' : '' }}"
+                    <a class="nav-link {{ request()->routeIs('profil.index') ? 'active' : '' }}"
                         href="{{ route('profil.index') }}">
                         Profil
                     </a>
                 </li>
 
-                {{-- Menu lain --}}
+                {{-- Kategori --}}
                 <li>
                     <a class="nav-link {{ request()->routeIs('kategori.index') ? 'active' : '' }}"
                         href="{{ route('kategori.index') }}">
                         Kategori Berita
                     </a>
                 </li>
+
+                {{-- Berita --}}
                 <li>
                     <a class="nav-link {{ request()->routeIs('berita.index') ? 'active' : '' }}"
                         href="{{ route('berita.index') }}">
                         Berita
                     </a>
                 </li>
+
+                {{-- Agenda --}}
                 <li>
                     <a class="nav-link {{ request()->routeIs('agenda.index') ? 'active' : '' }}"
                         href="{{ route('agenda.index') }}">
                         Agenda
                     </a>
                 </li>
+
+                {{-- Galeri --}}
                 <li>
                     <a class="nav-link {{ request()->routeIs('galeri.index') ? 'active' : '' }}"
                         href="{{ route('galeri.index') }}">
                         Galeri
                     </a>
                 </li>
-                <li>
 
-                    {{-- Dropdown Tambah Data --}}
+                {{-- Dropdown Tambah Data --}}
                 <li class="dropdown position-relative">
                     <a href="#"
                         class="nav-link dropdown-toggle {{ request()->routeIs('user.create') || request()->routeIs('warga.tambah') ? 'active' : '' }}">
@@ -67,17 +72,24 @@
                         <li><a href="{{ route('warga.tambah') }}">Data Warga</a></li>
                     </ul>
                 </li>
-                <a class="nav-link {{ request()->routeIs('login') ? 'active' : '' }}" href="{{ route('login') }}">
-                    Login
-                </a>
+
+                {{-- Login --}}
+                <li>
+                    <a class="nav-link {{ request()->routeIs('login') ? 'active' : '' }}"
+                        href="{{ route('login') }}">
+                        Login
+                    </a>
                 </li>
             </ul>
+
+            {{-- Mobile Toggle Icon --}}
             <i class="bi bi-list mobile-nav-toggle"></i>
         </nav>
     </div>
 </header>
 
-{{-- ==== Dropdown Style ==== --}}
+
+{{-- ==== DROPDOWN STYLE ==== --}}
 <style>
     .navbar ul li.dropdown {
         position: relative;
@@ -115,13 +127,14 @@
         display: block;
     }
 
-    /* Saat aktif (klik) */
+    /* Klik mode (mobile) */
     .navbar ul li.dropdown.open>.dropdown-menu {
         display: block;
     }
 </style>
 
-{{-- ==== Dropdown Script (fix klik) ==== --}}
+
+{{-- ==== DROPDOWN CLICK FIX ==== --}}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const dropdownToggles = document.querySelectorAll('.navbar .dropdown-toggle');
@@ -131,7 +144,7 @@
                 e.preventDefault();
                 const parent = this.closest('.dropdown');
 
-                // Tutup dropdown lain biar cuma satu yang aktif
+                // Tutup dropdown lain
                 document.querySelectorAll('.navbar .dropdown').forEach(drop => {
                     if (drop !== parent) drop.classList.remove('open');
                 });
@@ -144,18 +157,32 @@
         // Klik di luar dropdown -> tutup semua
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.dropdown')) {
-                document.querySelectorAll('.navbar .dropdown').forEach(drop => drop.classList.remove(
-                    'open'));
+                document.querySelectorAll('.navbar .dropdown').forEach(drop => drop.classList.remove('open'));
             }
         });
 
-        // Klik link di dalam dropdown biar halaman pindah, gak langsung hilang
+        // Klik link dropdown tetap pindah halaman
         const dropdownLinks = document.querySelectorAll('.navbar .dropdown-menu a');
         dropdownLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
+            link.addEventListener('click', function() {
                 const parentDropdown = this.closest('.dropdown');
                 if (parentDropdown) parentDropdown.classList.remove('open');
             });
         });
+    });
+</script>
+
+
+{{-- ==== MOBILE SIDEBAR TOGGLE (FIX HP TIDAK BISA KELUAR MENU) ==== --}}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const toggleBtn = document.querySelector(".mobile-nav-toggle");
+        const navbar = document.querySelector("#navbar");
+
+        if (toggleBtn && navbar) {
+            toggleBtn.addEventListener("click", function() {
+                navbar.classList.toggle("navbar-mobile");
+            });
+        }
     });
 </script>
