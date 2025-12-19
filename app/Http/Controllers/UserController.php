@@ -5,63 +5,41 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    // 📋 Tampilkan semua user (seperti halaman Data User)
-    public function index()
+    // 📋 Tampilkan semua user
+    public function index(Request $request)
     {
-        // urut dari yang pertama kali login (created_at paling awal)
-        $users = User::orderBy('created_at', 'asc')->get();
         $currentUser = Session::get('user');
+
+        $users = User::orderBy('created_at', 'asc')
+            ->when($request->filled('status'), function ($query) use ($request) {
+                $query->where('status', $request->status);
+            })
+            ->when($request->filled('role'), function ($query) use ($request) {
+                $query->where('role', $request->role);
+            })
+            ->paginate(5)
+            ->withQueryString();
 
         return view('pages.user.index', compact('users', 'currentUser'));
     }
 
-    // 🧍‍♂️ Profil user yang login (edit profil sendiri)
+    // 🧍‍♂️ Profil user yang login
     public function profil()
     {
-        $user = Session::get('user');
+        $user = User::find(auth()->id());
 
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'Silakan login dulu!');
+        if (! $user) {
+            return redirect()->route('login')->with('error', 'User tidak ditemukan!');
         }
 
         return view('pages.user.profil', compact('user'));
     }
 
-    // 💾 Simpan update profil
-    public function update(Request $request)
-    {
-        $user = Session::get('user');
-
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'Silakan login dulu!');
-        }
-
-        $request->validate([
-            'name'     => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users,username,' . $user->id,
-            'email'    => 'required|email',
-            'password' => 'nullable|min:4',
-        ]);
-
-        $dbUser = User::find($user->id);
-        $dbUser->name = $request->name;
-        $dbUser->username = $request->username;
-        $dbUser->email = $request->email;
-
-        if ($request->filled('password')) {
-            $dbUser->password = Hash::make($request->password);
-        }
-
-        $dbUser->save();
-        Session::put('user', $dbUser);
-
-        return redirect()->route('profil.user')->with('success', 'Profil berhasil diperbarui!');
-    }
-
-    // 🧾 Form tambah user baru
+    // 🧾 FORM TAMBAH USER BARU
     public function create()
     {
         return view('pages.user.create');
@@ -75,16 +53,55 @@ class UserController extends Controller
             'username' => 'required|string|max:255|unique:users,username',
             'email'    => 'required|email|unique:users,email',
             'password' => 'required|min:4',
+            'role'     => 'required|in:admin,user', // ✅ VALIDASI ROLE
         ]);
 
-        $user = new User();
-        $user->name     = $request->name;
-        $user->username = $request->username;
-        $user->email    = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->save();
+        User::create([
+            'name'     => $request->name,
+            'username' => $request->username,
+            'email'    => $request->email,
+            'password' => Hash::make($request->password),
+            'status'   => $request->status,
+            'role'     => $request->role,
+        ]);
 
         return redirect()->route('user.index')->with('success', 'User baru berhasil ditambahkan!');
+    }
+
+    // 💾 Update profil user sendiri
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $request->validate([
+            'name'            => 'required',
+            'email'           => 'required|email|unique:users,email,' . $id,
+            'username'        => 'required|unique:users,username,' . $id,
+            'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $user->name     = $request->name;
+        $user->email    = $request->email;
+        $user->username = $request->username;
+
+        if ($request->password) {
+            $user->password = bcrypt($request->password);
+        }
+
+        // simpan foto
+        if ($request->hasFile('profile_picture')) {
+
+            if ($user->profile_picture) {
+                Storage::disk('public')->delete($user->profile_picture);
+            }
+
+            $path                  = $request->file('profile_picture')->store('profile_pictures', 'public');
+            $user->profile_picture = $path;
+        }
+
+        $user->save();
+
+        return redirect()->route('profil.user')->with('success', 'Profil berhasil diperbarui!');
     }
 
     // ✏️ Form edit user lain
@@ -98,11 +115,13 @@ class UserController extends Controller
     public function updateUser(Request $request, $id)
     {
         $user = User::findOrFail($id);
+
         $request->validate([
             'name'     => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username,' . $id,
             'email'    => 'required|email|unique:users,email,' . $id,
             'password' => 'nullable|min:4',
+            'role'     => 'required|in:admin,user', // ✅ VALIDASI ROLE
         ]);
 
         $user->name     = $request->name;
@@ -113,11 +132,13 @@ class UserController extends Controller
             $user->password = Hash::make($request->password);
         }
 
+        $user->role = $request->role;
         $user->save();
+
         return redirect()->route('user.index')->with('success', 'User berhasil diperbarui!');
     }
 
-    // 🗑️ Hapus user (kecuali user aktif)
+    // 🗑️ Hapus user
     public function destroy($id)
     {
         $currentUser = Session::get('user');

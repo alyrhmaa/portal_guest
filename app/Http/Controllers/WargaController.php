@@ -6,35 +6,35 @@ use Illuminate\Http\Request;
 
 class WargaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // BERANDA
     public function beranda()
     {
-        return view('pages.beranda'); // tampilkan beranda khusus
+        return view('pages.beranda');
     }
 
-    public function index()
+    // LIST WARGA
+    public function index(Request $request)
     {
-        if (! Session::has('user')) {
+        if (! auth()->check()) {
             return redirect()->route('login')->with('error', 'Silakan login dulu');
         }
-        
-        $warga = Warga::all();
+
+        $search = $request->search;
+
+        $warga = Warga::filter($request->only('search'))
+            ->paginate(5)
+            ->withQueryString();
+
         return view('pages.warga.index', compact('warga'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // FORM TAMBAH
     public function wargaTambah()
     {
         return view('pages.warga.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // SIMPAN DATA
     public function wargaSimpan(Request $request)
     {
         $request->validate([
@@ -52,18 +52,14 @@ class WargaController extends Controller
         return redirect()->route('warga.index')->with('success', 'Data warga berhasil ditambahkan!');
     }
 
-    /**
-     * Display the specified resource.
-     */
+    // EDIT FORM
     public function wargaEdit(string $id)
     {
         $warga = Warga::findOrFail($id);
         return view('pages.warga.edit', compact('warga'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    // UPDATE DATA
     public function wargaUpdate(Request $request, string $id)
     {
         $warga = Warga::findOrFail($id);
@@ -72,9 +68,7 @@ class WargaController extends Controller
         return redirect()->route('warga.index')->with('success', 'Data warga berhasil diperbarui!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    // HAPUS DATA
     public function wargaHapus(string $id)
     {
         Warga::findOrFail($id)->delete();

@@ -1,9 +1,8 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Models\KategoriBerita;
-use App\Models\Berita;   // ← Tambahkan model Berita
+use App\Models\Berita;
+use App\Models\KategoriBerita; // ← Tambahkan model Berita
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -12,20 +11,25 @@ class KategoriBeritaController extends Controller
     // ==========================
     // 🌸 INDEX LIST KATEGORI
     // ==========================
-    public function index()
+    public function index(Request $request)
     {
-        // ambil semua kategori + hitung berita per kategori
-        $kategori = KategoriBerita::withCount('berita')->get();
+        $search = $request->search;
 
-        $totalKategori = KategoriBerita::count();
-        $totalBerita = Berita::count();
+        $kategori = KategoriBerita::withCount('berita')
+            ->filter($request)
+            ->paginate(6)
+            ->withQueryString();
+
+        $totalKategori  = KategoriBerita::count();
+        $totalBerita    = Berita::count();
         $beritaBulanIni = Berita::whereMonth('created_at', now()->month)->count();
 
         return view('pages.kategori-berita.index', compact(
             'kategori',
             'totalKategori',
             'totalBerita',
-            'beritaBulanIni'
+            'beritaBulanIni',
+            'search'
         ));
     }
 
@@ -43,13 +47,13 @@ class KategoriBeritaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => 'required',
+            'nama'      => 'required',
             'deskripsi' => 'nullable',
         ]);
 
         KategoriBerita::create([
-            'nama' => $request->nama,
-            'slug' => Str::slug($request->nama),
+            'nama'      => $request->nama,
+            'slug'      => Str::slug($request->nama),
             'deskripsi' => $request->deskripsi,
         ]);
 
@@ -72,21 +76,21 @@ class KategoriBeritaController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-        'nama' => 'required',
-        'deskripsi' => 'nullable',
-    ]);
+            'nama'      => 'required',
+            'deskripsi' => 'nullable',
+        ]);
 
-    $kategori = KategoriBerita::findOrFail($id);
+        $kategori = KategoriBerita::findOrFail($id);
 
-    $kategori->update([
-        'nama' => $request->nama,
-        'slug' => Str::slug($request->nama),
-        'deskripsi' => $request->deskripsi,
-    ]);
+        $kategori->update([
+            'nama'      => $request->nama,
+            'slug'      => Str::slug($request->nama),
+            'deskripsi' => $request->deskripsi,
+        ]);
 
-    return redirect()->route('kategori.index')
-        ->with('success', 'Kategori berhasil diperbarui.');
-}
+        return redirect()->route('kategori.index')
+            ->with('success', 'Kategori berhasil diperbarui.');
+    }
 
     // ==========================
     // 🌸 DELETE
@@ -94,9 +98,9 @@ class KategoriBeritaController extends Controller
     public function destroy($id)
     {
         $kategori = KategoriBerita::findOrFail($id);
-    $kategori->delete();
+        $kategori->delete();
 
-    return redirect()->route('kategori.index')
-        ->with('success', 'Kategori berhasil dihapus.');
+        return redirect()->route('kategori.index')
+            ->with('success', 'Kategori berhasil dihapus.');
     }
 }

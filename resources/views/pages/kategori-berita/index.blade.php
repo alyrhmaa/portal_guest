@@ -1,317 +1,248 @@
 @extends('layouts.guest.main')
 
 @section('content')
-    <div class="kategori-container">
-        <div class="kategori-header">
-            <h1 class="kategori-title">
-                <i class="fas fa-folder-open"></i>
-                Kategori Berita
-            </h1>
-            <p class="kategori-subtitle">Temukan berita berdasarkan kategori yang tersedia</p>
-        </div>
 
-        <div class="kategori-stats">
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-layer-group"></i>
-                </div>
-                <div class="stat-info">
-                    <span class="stat-number">{{ $totalKategori }}</span>
-                    <span class="stat-label">Total Kategori</span>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-newspaper"></i>
-                </div>
-                <div class="stat-info">
-                    <span class="stat-number">{{ $totalBerita }}</span>
-                    <span class="stat-label">Total Berita</span>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-calendar-alt"></i>
-                </div>
-                <div class="stat-info">
-                    <span class="stat-number">{{ $beritaBulanIni }}</span>
-                    <span class="stat-label">Berita Bulan Ini</span>
+    <!-- Hero Section -->
+    <section class="kategori-hero py-5 text-white" style="background: linear-gradient(135deg, #ec709f 0%, #db548a 100%);">
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-lg-8">
+                    <h1 class="display-5 fw-bold mb-3">
+                        <i class="bi bi-folder me-2"></i>Kategori Berita
+                    </h1>
+                    <p class="lead mb-0">
+                        Temukan berita berdasarkan kategori yang tersedia
+                    </p>
                 </div>
             </div>
         </div>
+    </section>
 
-        {{-- =======================
-            🔥 TOMBOL TAMBAH BERITA (DI LUAR CARD)
-        ======================== --}}
-        <div class="d-flex justify-content-end mb-4">
-            <a href="{{ route('berita.create') }}" class="btn btn-success px-4 py-2" style="font-size: 1rem;">
-                ➕ Tambah Berita
-            </a>
-        </div>
+    <!-- Main Content -->
+    <section class="kategori-content py-5 bg-light">
+        <div class="container">
 
-        <div class="d-flex justify-content-end mb-3">
-            <a href="{{ route('kategori.tambah') }}" class="btn btn-success">
-                ➕ Tambah Kategori
-            </a>
-        </div>
+            <!-- Stats Section -->
+            <div class="row mb-5">
+                <div class="col-md-4 mb-3">
+                    <div class="stat-card bg-white rounded-4 shadow-sm p-4 text-center">
+                        <div class="stat-icon mb-3">
+                            <i class="bi bi-layers-fill text-pink fs-1"></i>
+                        </div>
+                        <h3 class="fw-bold text-pink mb-1">{{ $totalKategori }}</h3>
+                        <p class="text-muted mb-0">Total Kategori</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="stat-card bg-white rounded-4 shadow-sm p-4 text-center">
+                        <div class="stat-icon mb-3">
+                            <i class="bi bi-newspaper text-pink fs-1"></i>
+                        </div>
+                        <h3 class="fw-bold text-pink mb-1">{{ $totalBerita }}</h3>
+                        <p class="text-muted mb-0">Total Berita</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="stat-card bg-white rounded-4 shadow-sm p-4 text-center">
+                        <div class="stat-icon mb-3">
+                            <i class="bi bi-calendar-check text-pink fs-1"></i>
+                        </div>
+                        <h3 class="fw-bold text-pink mb-1">{{ $beritaBulanIni }}</h3>
+                        <p class="text-muted mb-0">Berita Bulan Ini</p>
+                    </div>
+                </div>
+            </div>
 
+            <!-- Action Buttons -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="d-flex justify-content-end gap-3 flex-wrap">
+                        <a href="{{ route('berita.create') }}" class="btn btn-pink text-white rounded-pill px-4">
+                            <i class="bi bi-plus-circle me-2"></i>Tambah Berita
+                        </a>
+                        <a href="{{ route('kategori.create') }}" class="btn btn-outline-pink rounded-pill px-4">
+                            <i class="bi bi-folder-plus me-2"></i>Tambah Kategori
+                        </a>
 
-        <div class="kategori-grid">
-            @if ($kategori->isEmpty())
-                <div class="alert alert-info text-center w-100">
-                    Belum ada data kategori.
-                    <br>
-                    <a href="{{ route('kategori.tambah') }}" class="btn btn-success mt-3">
-                        ➕ Tambah Kategori
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search + Reset -->
+            <div class="d-flex gap-2 mb-4">
+                <form method="GET" action="{{ route('kategori.index') }}" class="flex-grow-1">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control rounded-start-pill"
+                            placeholder="Cari kategori..." value="{{ request('search') }}">
+
+                        <button class="btn btn-pink text-white rounded-end-pill px-4" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
+
+                @if (request('search'))
+                    <a href="{{ route('kategori.index') }}" class="btn btn-danger rounded-pill px-4">
+                        Reset
                     </a>
-                </div>
-            @else
-                @foreach ($kategori as $kat)
-                    <div class="kategori-card">
-                        <div class="card-header">
-                            <div class="category-icon">
-                                <i class="fas fa-folder-open"></i>
-                            </div>
-                            <div class="category-badge">
-                                KAT-{{ str_pad($kat->kategori_id, 3, '0', STR_PAD_LEFT) }}
-                            </div>
-                        </div>
+                @endif
+            </div>
 
-                        <div class="card-body">
-                            <h3 class="category-name">{{ $kat->nama }}</h3>
-                            <span class="category-slug">{{ $kat->slug }}</span>
-                            <p class="category-description">
-                                {{ $kat->deskripsi ?? 'Belum ada deskripsi untuk kategori ini.' }}
-                            </p>
-                        </div>
-
-                        <div class="card-footer">
-                            <div class="news-count">
-                                <i class="fas fa-file-alt"></i>
-                                {{ $kat->berita_count }} Berita
-                            </div>
-
-                            <div class="d-flex gap-2">
-                                {{-- Edit --}}
-                                <a href="{{ route('kategori.edit', $kat->kategori_id) }}" class="btn btn-sm btn-primary">✏️
-                                    Edit</a>
-
-                                {{-- Hapus --}}
-                                <form action="{{ url('kategori/hapus/' . $kat->kategori_id) }}" method="POST"
-                                    style="display:inline;">
-                                    @csrf
-                                    @method('get')
-                                    <button type="submit" class="btn btn-danger btn-sm"
-                                        onclick="return confirm('Yakin ingin menghapus kategori ini?')">
-                                        Hapus
-                                    </button>
-                                </form>
-
+            <!-- Kategori Grid -->
+            <div class="row">
+                @if ($kategori->isEmpty())
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm text-center py-5">
+                            <div class="card-body">
+                                <i class="bi bi-folder-x display-4 text-muted mb-3"></i>
+                                <h4 class="text-muted mb-3">Belum ada data kategori</h4>
+                                <a href="{{ route('kategori.tambah') }}" class="btn btn-pink text-white rounded-pill px-4">
+                                    <i class="bi bi-folder-plus me-2"></i>Tambah Kategori Pertama
+                                </a>
                             </div>
                         </div>
                     </div>
-                @endforeach
-            @endif
+                @else
+                    @foreach ($kategori as $kat)
+                    {{-- row col-md-6 --}}
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="kategori-card card border-0 shadow-sm h-100">
+
+                                <div class="card-header bg-pink text-white py-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-folder-fill me-2 fs-5"></i>
+                                            <h5 class="mb-0 fw-bold">
+                                                KAT-{{ str_pad($kat->kategori_id, 3, '0', STR_PAD_LEFT) }}
+                                            </h5>
+                                        </div>
+                                        <span class="badge bg-white text-pink">{{ $kat->berita_count }} Berita</span>
+                                    </div>
+                                </div>
+
+                                <div class="card-body p-4">
+                                    <h4 class="fw-bold text-dark mb-2">{{ $kat->nama }}</h4>
+                                    <span class="badge bg-light text-dark mb-3">{{ $kat->slug }}</span>
+                                    <p class="text-muted mb-4">
+                                        {{ $kat->deskripsi ?? 'Belum ada deskripsi untuk kategori ini.' }}
+                                    </p>
+                                </div>
+
+                                <div class="card-footer bg-transparent border-0 p-4 pt-0">
+                                    <div class="d-flex gap-2">
+                                        <a href="{{ route('kategori.edit', $kat->kategori_id) }}"
+                                            class="btn btn-outline-primary btn-sm rounded-pill flex-fill">
+                                            <i class="bi bi-pencil me-1"></i>Edit
+                                        </a>
+
+                                        <form action="{{ route('kategori.destroy', $kat->kategori_id) }}" method="POST"
+                                            class="flex-fill">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill w-100">
+                                                <i class="bi bi-trash me-1"></i>Hapus
+                                            </button>
+                                        </form>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
+            </div>
+
+            <!-- Pagination -->
+            <div class="mt-4 d-flex justify-content-center">
+                {{ $kategori->links('pagination::bootstrap-5') }}
+            </div>
+
         </div>
+    </section>
 
-        {{-- =======================
-            STYLE (TIDAK DIUBAH)
-        ======================== --}}
-        <style>
-            .kategori-container {
-                max-width: 1200px;
-                margin: 0 auto;
-                padding: 2rem;
+    <style>
+        .kategori-hero {
+            padding: 80px 0;
+        }
+
+        .stat-card {
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(236, 112, 159, 0.15) !important;
+        }
+
+        .stat-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover .stat-icon {
+            transform: scale(1.1);
+        }
+
+        .kategori-card {
+            transition: all 0.3s ease;
+            border-radius: 15px;
+        }
+
+        .kategori-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(236, 112, 159, 0.2) !important;
+        }
+
+        .text-pink {
+            color: #ec709f !important;
+        }
+
+        .bg-pink {
+            background: linear-gradient(135deg, #ec709f 0%, #db548a 100%) !important;
+        }
+
+        .btn-pink {
+            background: linear-gradient(135deg, #ec709f 0%, #db548a 100%) !important;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-pink:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(236, 112, 159, 0.3);
+        }
+
+        .btn-outline-pink {
+            color: #ec709f;
+            border: 2px solid #ec709f;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-pink:hover {
+            background: #ec709f;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .kategori-hero {
+                padding: 60px 0;
             }
 
-            .kategori-header {
-                text-align: center;
-                margin-bottom: 3rem;
-            }
-
-            .kategori-title {
-                font-size: 2.5rem;
-                font-weight: 700;
-                color: #2c5aa0;
-                margin-bottom: 0.5rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 1rem;
-            }
-
-            .kategori-title i {
-                color: #f8a01d;
-            }
-
-            .kategori-subtitle {
-                font-size: 1.1rem;
-                color: #6c757d;
-                margin-bottom: 0;
-            }
-
-            .kategori-stats {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 1.5rem;
-                margin-bottom: 3rem;
-            }
-
-            .stat-card {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                color: white;
-                padding: 1.5rem;
-                border-radius: 15px;
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-                transition: transform 0.3s ease;
-            }
-
-            .stat-card:hover {
-                transform: translateY(-5px);
-            }
-
-            .stat-icon {
-                width: 60px;
-                height: 60px;
-                background: rgba(255, 255, 255, 0.2);
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 1.5rem;
-            }
-
-            .stat-info {
-                display: flex;
-                flex-direction: column;
-            }
-
-            .stat-number {
+            .display-5 {
                 font-size: 2rem;
-                font-weight: 700;
-                line-height: 1;
             }
 
-            .stat-label {
-                font-size: 0.9rem;
-                opacity: 0.9;
+            .d-flex.justify-content-end {
+                justify-content: center !important;
             }
 
-            .kategori-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-                gap: 2rem;
-            }
-
-            .kategori-card {
-                background: white;
-                border-radius: 20px;
-                padding: 1.5rem;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-                border: 1px solid #e9ecef;
-                transition: all 0.3s ease;
-                position: relative;
-                overflow: hidden;
-            }
-
-            .kategori-card:hover {
-                transform: translateY(-10px);
-                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-                border-color: #4a7bc8;
-            }
-
-            .kategori-card::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
+            .btn {
                 width: 100%;
-                height: 4px;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                max-width: 250px;
             }
+        }
+    </style>
 
-            .card-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-start;
-                margin-bottom: 1rem;
-            }
-
-            .category-icon {
-                width: 60px;
-                height: 60px;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                border-radius: 15px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: white;
-                font-size: 1.5rem;
-            }
-
-            .category-badge {
-                background: #f8f9fa;
-                color: #6c757d;
-                padding: 0.3rem 0.8rem;
-                border-radius: 20px;
-                font-size: 0.8rem;
-                font-weight: 600;
-                border: 1px solid #e9ecef;
-            }
-
-            .card-body {
-                margin-bottom: 1.5rem;
-            }
-
-            .category-name {
-                font-size: 1.3rem;
-                font-weight: 700;
-                color: #2c5aa0;
-                margin-bottom: 0.5rem;
-                line-height: 1.3;
-            }
-
-            .category-slug {
-                display: inline-block;
-                background: #e3f2fd;
-                color: #1976d2;
-                padding: 0.3rem 0.8rem;
-                border-radius: 15px;
-                font-size: 0.8rem;
-                font-weight: 600;
-                margin-bottom: 1rem;
-            }
-
-            .category-description {
-                color: #6c757d;
-                line-height: 1.6;
-                margin-bottom: 0;
-            }
-
-            .card-footer {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding-top: 1rem;
-                border-top: 1px solid #e9ecef;
-            }
-
-            .news-count {
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-                color: #6c757d;
-                font-size: 0.9rem;
-                font-weight: 500;
-            }
-
-            .news-count i {
-                color: #4a7bc8;
-            }
-        </style>
-    @endsection
+@endsection

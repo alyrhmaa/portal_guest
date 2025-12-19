@@ -7,7 +7,6 @@
         <form action="{{ route('kategori.update', $kategori->kategori_id) }}" method="POST">
             @csrf
            
-
             <div class="mb-3">
                 <label>Nama Kategori</label>
                 <input type="text" name="nama" class="form-control" value="{{ $kategori->nama }}" required>

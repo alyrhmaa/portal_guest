@@ -6,23 +6,17 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-        $table->timestamp('last_login')->nullable();
-    });
+            $table->timestamp('last_login')->nullable(); // ✅ hanya last_login
+        });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            $table->dropColumn('last_login'); // ✅ hanya last_login
         });
     }
 };

@@ -3,38 +3,63 @@
 <script src="{{ asset('assets-guest/vendor/glightbox/js/glightbox.min.js') }}"></script>
 <script src="{{ asset('assets-guest/vendor/swiper/swiper-bundle.min.js') }}"></script>
 
+<!-- JS bawaan template -->
 <script src="{{ asset('assets-guest/js/main.js') }}"></script>
 
 @stack('scripts')
 
-<!-- === FIX MOBILE NAVBAR (SESUIAIKAN DENGAN NAVBAR KAMU) === -->
+<!-- =====================================================
+     FINAL FIX DROPDOWN – CLICK ONLY (NO FLICKER)
+     ===================================================== -->
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", function () {
 
-    const toggleBtn = document.querySelector('.mobile-nav-toggle');
-    const navbar = document.querySelector('#navbar');
+    // ============================
+    //   MOBILE NAV TOGGLE
+    // ============================
+    const mobileNavToggle = document.querySelector(".mobile-nav-toggle");
+    const navbar = document.querySelector("#navbar");
 
-    // tombol mobile harus ada
-    if (toggleBtn && navbar) {
+    mobileNavToggle.addEventListener("click", function () {
+        navbar.classList.toggle("navbar-mobile");
+        this.classList.toggle("bi-list");
+        this.classList.toggle("bi-x");
+    });
 
-        toggleBtn.addEventListener('click', function() {
-            navbar.classList.toggle('navbar-mobile');  // tampilkan menu mobile
+    // ============================
+    //   DROPDOWN CLICK (DESKTOP)
+    // ============================
+    document.querySelectorAll(".navbar .dropdown > a").forEach(function (dropdownLink) {
+        dropdownLink.addEventListener("click", function (e) {
+            // biar tidak lompat ke atas
+            e.preventDefault();
 
-            // ubah icon bi-list ke bi-x
-            this.classList.toggle('bi-list');
-            this.classList.toggle('bi-x');
+            let dropdownMenu = this.nextElementSibling;
+
+            // toggle class show
+            dropdownMenu.classList.toggle("show");
+
+            // tutup dropdown lain
+            document.querySelectorAll(".navbar .dropdown ul").forEach(function (otherMenu) {
+                if (otherMenu !== dropdownMenu) {
+                    otherMenu.classList.remove("show");
+                }
+            });
         });
-    }
+    });
 
-    // dropdown agar bisa dibuka di mode mobile
-    document.querySelectorAll('.navbar .dropdown > a').forEach(link => {
-        link.addEventListener('click', function(e) {
-            if (navbar.classList.contains('navbar-mobile')) {
+    // ============================
+    //   DROPDOWN MOBILE
+    // ============================
+    document.querySelectorAll(".navbar-mobile .dropdown > a").forEach(function (el) {
+        el.addEventListener("click", function (e) {
+            if (document.querySelector("#navbar").classList.contains("navbar-mobile")) {
                 e.preventDefault();
-                this.nextElementSibling.classList.toggle('dropdown-active');
+                this.nextElementSibling.classList.toggle("dropdown-active");
             }
         });
     });
 
 });
+
 </script>

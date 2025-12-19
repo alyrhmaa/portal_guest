@@ -1,8 +1,6 @@
 <?php
-
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -16,8 +14,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-        KategoriBeritaSeeder::class,
-        BeritaSeeder::class,
-    ]);
+            KategoriBeritaSeeder::class,
+            BeritaSeeder::class,
+            AgendaSeeder::class,
+            GaleriSeeder::class,
+        ]);
     }
 }

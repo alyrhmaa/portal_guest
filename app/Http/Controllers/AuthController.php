@@ -6,28 +6,23 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
-    // ================================
     // FORM REGISTER
-    // ================================
     public function showRegister()
     {
         return view('pages.auth.register');
     }
 
-    // ================================
     // FORM LOGIN
-    // ================================
     public function showLogin()
     {
         return view('pages.auth.login');
     }
 
-    // ================================
     // PROSES REGISTER
-    // ================================
     public function register(Request $request)
     {
         $validated = $request->validate([
@@ -47,38 +42,35 @@ class AuthController extends Controller
         return redirect()->route('login')->with('success', 'Registrasi berhasil! Silakan login.');
     }
 
-    // ================================
-    // PROSES LOGIN (PAKAI AUTH)
-    // ================================
-    public function login(Request $request)
-    {
-        $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required',
-        ]);
+   // PROSES LOGIN
+public function login(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-        $credentials = $request->only('email', 'password');
+    $credentials = $request->only('email', 'password');
 
-        // 🔥 Cek login dengan Auth Laravel
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
+    if (Auth::attempt($credentials)) {
+        // ✅ Update last_login
+        Auth::user()->update(['last_login' => now()]);
 
-            // Update last login
-            Auth::user()->update([
-                'last_login' => now(),
-            ]);
+        // ✅ Simpan di session
+        Session::put('user', Auth::user());
 
-            return redirect()->route('user.index')->with('success', 'Berhasil login!');
-        }
-
-        return back()->with('error', 'Email atau password salah!');
+        return redirect()->route('user.index')->with('success', 'Berhasil login!');
     }
 
-    // ================================
-    // LOGOUT
-    // ================================
+    return back()->with('error', 'Email atau password salah!');
+}
+
+    // LOGOUT - FIXED
     public function logout(Request $request)
     {
+        // ✅ Hapus session user
+        Session::forget('user');
+
         Auth::logout();
 
         $request->session()->invalidate();

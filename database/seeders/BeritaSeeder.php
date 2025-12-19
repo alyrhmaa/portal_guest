@@ -1,18 +1,17 @@
 <?php
-
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Berita;
 use App\Models\KategoriBerita;
-use Illuminate\Support\Str;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class BeritaSeeder extends Seeder
 {
     public function run(): void
     {
-        $faker = Faker::create('id_ID'); // Nama Indonesia
+        $faker = Faker::create('id_ID');
 
         $kategori = KategoriBerita::all();
 
@@ -21,7 +20,6 @@ class BeritaSeeder extends Seeder
             return;
         }
 
-        // Kumpulan judul berita berbahasa Indonesia
         $judulList = [
             "Pemerintah Desa Gelar Rapat Koordinasi",
             "Kegiatan Gotong Royong Berjalan Lancar",
@@ -35,7 +33,6 @@ class BeritaSeeder extends Seeder
             "Peningkatan Sarana dan Prasarana Desa",
         ];
 
-        // Kumpulan isi berita berbahasa Indonesia
         $isiList = [
             "Kegiatan ini mendapat dukungan penuh dari warga dan berjalan dengan baik.",
             "Pemerintah desa menghimbau warga untuk aktif mengikuti program yang telah dijadwalkan.",
@@ -44,7 +41,7 @@ class BeritaSeeder extends Seeder
             "Warga diharapkan berpartisipasi dalam kegiatan yang telah direncanakan.",
         ];
 
-        foreach (range(1, 10) as $i) {
+        foreach (range(1, 100) as $i) {
 
             $judul = $faker->randomElement($judulList);
             $isi   = $faker->randomElement($isiList);
@@ -52,14 +49,21 @@ class BeritaSeeder extends Seeder
             Berita::create([
                 'kategori_id' => $kategori->random()->kategori_id,
                 'judul'       => $judul,
-                'slug'        => Str::slug($judul . '-' . $i),
+                'slug'        => Str::slug($judul) . '-' . Str::random(6), // anti duplikasi
                 'isi_html'    => "<p>$isi</p>",
-                'penulis'     => $faker->name(), // Nama Indonesia OK
+                'penulis'     => $faker->name(),
                 'status'      => $faker->randomElement(['draft', 'publish']),
-                'terbit_at'   => now(),
+                'terbit_at'   => now()->subDays(rand(0, 30)), // terbit antara 0–30 hari yang lalu
             ]);
+            // Media::create([
+            //     'ref_table'  => 'galeri',
+            //     'ref_id'     => $berita->berita_id,
+            //     'file_name'  => $dummyName,
+            //     'mime_type'  => 'image/jpeg',
+            //     'sort_order' => 1,
+            // ]);
         }
 
-        $this->command->info("Berhasil membuat 10 berita dummy berbahasa Indonesia!");
+        $this->command->info("Berhasil membuat 100 berita dummy berbahasa Indonesia!");
     }
 }

@@ -1,9 +1,10 @@
 <?php
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\KategoriBerita;
 use App\Models\Berita;
+use App\Models\KategoriBerita;
+use App\Models\Media;
+use App\Models\Profil;
 
 class GuestController extends Controller
 {
@@ -20,7 +21,10 @@ class GuestController extends Controller
     // ==========================
     public function profil()
     {
-        return view('pages.profil');
+        // Ambil data profil dari database
+        $profil = \App\Models\Profil::first();
+
+        return view('pages.profil', compact('profil'));
     }
 
     // ==========================
@@ -28,7 +32,7 @@ class GuestController extends Controller
     // ==========================
     public function about()
     {
-        return view('pages.about');
+        return view('about');
     }
 
     // ==========================
@@ -64,8 +68,15 @@ class GuestController extends Controller
     public function detail($id)
     {
         $berita = Berita::with('kategori')->findOrFail($id);
-        return view('pages.berita-detail', compact('berita'));
+
+        $media = Media::where('ref_table', 'berita')
+            ->where('ref_id', $id)
+            ->orderBy('sort_order')
+            ->get();
+
+        return view('pages.berita.detail', compact('berita', 'media'));
     }
+
     // ==========================
     // 🌸 HALAMAN AGENDA
     // ==========================
@@ -79,6 +90,18 @@ class GuestController extends Controller
     // ==========================
     public function galeri()
     {
-        return view('pages.galeri');
+        $totalAlbum = \App\Models\Galeri::count();
+        $totalFoto  = \App\Models\Media::where('ref_table', 'galeri')->count();
+
+        $galeri = \App\Models\Galeri::with('media')->get();
+
+        return view('pages.galeri.index', [
+            'title'      => 'Galeri Desa',
+            'totalAlbum' => $totalAlbum,
+            'totalFoto'  => $totalFoto,
+            'galeri'     => $galeri,
+        ]);
+
     }
+
 }
