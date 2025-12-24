@@ -9,7 +9,7 @@
             <div class="col-lg-8 mx-auto text-center">
                 <div class="hero-content">
                     <h1 class="display-4 fw-bold mb-4">
-                        🌸 Selamat Datang di Portal Desa
+                        🌸 Selamat Datang di Portal Desa Digital
                     </h1>
                     <p class="lead mb-4 fs-5">
                         Sistem informasi desa modern untuk mengelola data warga dan informasi desa secara terintegrasi

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Galeri;
@@ -8,11 +9,14 @@ use Illuminate\Support\Facades\File;
 
 class GaleriController extends Controller
 {
+    /**
+     * PUBLIC & MANAGE VIEW
+     */
     public function index()
     {
         $galeri = Galeri::with('media')
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->paginate(10); // WAJIB paginate, bukan get()
 
         return view('pages.galeri.index', [
             'title'      => 'Galeri Desa',
@@ -37,25 +41,22 @@ class GaleriController extends Controller
             'foto.*'    => 'image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        // buat album
         $galeri = Galeri::create([
             'judul'     => $request->judul,
             'deskripsi' => $request->deskripsi,
         ]);
 
-        // simpan foto ke tabel media
         if ($request->hasFile('foto')) {
             $this->saveMedia($request->file('foto'), $galeri->galeri_id);
         }
 
-        return redirect()->route('galeri.index')
-            ->with('success', 'Album galeri berhasil dibuat!');
+        return redirect()->route('galeri.manage')
+            ->with('success', 'Album galeri berhasil dibuat');
     }
 
     public function edit($id)
     {
         $galeri = Galeri::with('media')->findOrFail($id);
-
         return view('pages.galeri.edit', compact('galeri'));
     }
 
@@ -68,33 +69,29 @@ class GaleriController extends Controller
             'deskripsi' => $request->deskripsi,
         ]);
 
-        // tambah foto baru
         if ($request->hasFile('foto')) {
             $this->saveMedia($request->file('foto'), $galeri->galeri_id);
         }
 
-        return redirect()->route('galeri.index')
-            ->with('success', 'Album berhasil diperbarui!');
+        return redirect()->route('galeri.manage')
+            ->with('success', 'Galeri berhasil diperbarui');
     }
 
     public function destroy($id)
     {
         $galeri = Galeri::with('media')->findOrFail($id);
 
-        // hapus file fisik
-        foreach ($galeri->media as $m) {
-            File::delete(public_path('uploads/galeri/' . $m->file_name));
+        foreach ($galeri->media as $media) {
+            File::delete(public_path('uploads/galeri/' . $media->file_name));
         }
 
-        // hapus media DB
         Media::where('ref_table', 'galeri')
             ->where('ref_id', $id)
             ->delete();
 
-        // hapus album
         $galeri->delete();
 
-        return redirect()->route('galeri.index')
+        return redirect()->route('galeri.manage')
             ->with('success', 'Galeri berhasil dihapus');
     }
 
@@ -102,7 +99,6 @@ class GaleriController extends Controller
     {
         $media = Media::findOrFail($id);
 
-        // hapus file fisik
         $path = public_path('uploads/galeri/' . $media->file_name);
         if (file_exists($path)) {
             unlink($path);
@@ -110,9 +106,12 @@ class GaleriController extends Controller
 
         $media->delete();
 
-        return back()->with('success', 'Foto berhasil dihapus.');
+        return back()->with('success', 'Foto berhasil dihapus');
     }
 
+    /**
+     * Simpan multiple foto
+     */
     private function saveMedia($files, $galeri_id)
     {
         foreach ($files as $i => $file) {

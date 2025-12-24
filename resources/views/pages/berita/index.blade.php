@@ -118,7 +118,8 @@
                                                     $media = $b->media->first();
                                                 @endphp
 
-                                                <img src="{{ $media ? asset('storage/berita/' . $media->file_name) : asset('assets-guest/img/dummy-news.jpg') }}"
+                                                <img src="{{ $media ? asset('storage/ber
+                                                ita/' . $media->file_name) : asset('assets-guest/img/dummy-news.jpg') }}"
                                                     alt="{{ $b->judul }}">
 
                                             </td>

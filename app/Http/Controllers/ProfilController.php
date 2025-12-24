@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 class ProfilController extends Controller
 {
-    // HALAMAN PROFIL DESA (GUEST)
     public function index()
     {
         $profil = Profil::first();

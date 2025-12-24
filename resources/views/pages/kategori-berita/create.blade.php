@@ -4,7 +4,7 @@
 <div class="container mt-5">
     <h2 class="mb-4 fw-bold text-primary">Tambah Kategori Berita</h2>
 
-    <form action="{{ route('kategori.simpan') }}" method="POST">
+    <form action="{{ route('kategori.store') }}" method="POST">
         @csrf
         <div class="mb-3">
             <label class="form-label">Nama Kategori</label>

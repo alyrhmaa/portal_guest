@@ -14,7 +14,7 @@ class User extends Authenticatable
         'email',
         'username',
         'password',
-        'last_login', // ✅ hanya last_login saja
+        'last_login',
         'status',
         'role',
         'profile_picture',

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Warga;
@@ -6,21 +7,9 @@ use Illuminate\Http\Request;
 
 class WargaController extends Controller
 {
-    // BERANDA
-    public function beranda()
-    {
-        return view('pages.beranda');
-    }
-
-    // LIST WARGA
+    // LIST WARGA (ADMIN & USER LOGIN)
     public function index(Request $request)
     {
-        if (! auth()->check()) {
-            return redirect()->route('login')->with('error', 'Silakan login dulu');
-        }
-
-        $search = $request->search;
-
         $warga = Warga::filter($request->only('search'))
             ->paginate(5)
             ->withQueryString();
@@ -28,13 +17,13 @@ class WargaController extends Controller
         return view('pages.warga.index', compact('warga'));
     }
 
-    // FORM TAMBAH
+    // FORM TAMBAH (ADMIN)
     public function wargaTambah()
     {
         return view('pages.warga.create');
     }
 
-    // SIMPAN DATA
+    // SIMPAN DATA (ADMIN)
     public function wargaSimpan(Request $request)
     {
         $request->validate([
@@ -49,30 +38,33 @@ class WargaController extends Controller
 
         Warga::create($request->all());
 
-        return redirect()->route('warga.index')->with('success', 'Data warga berhasil ditambahkan!');
+        return redirect()->route('warga.index')
+            ->with('success', 'Data warga berhasil ditambahkan!');
     }
 
-    // EDIT FORM
+    // FORM EDIT (ADMIN)
     public function wargaEdit(string $id)
     {
         $warga = Warga::findOrFail($id);
         return view('pages.warga.edit', compact('warga'));
     }
 
-    // UPDATE DATA
+    // UPDATE DATA (ADMIN)
     public function wargaUpdate(Request $request, string $id)
     {
         $warga = Warga::findOrFail($id);
         $warga->update($request->all());
 
-        return redirect()->route('warga.index')->with('success', 'Data warga berhasil diperbarui!');
+        return redirect()->route('warga.index')
+            ->with('success', 'Data warga berhasil diperbarui!');
     }
 
-    // HAPUS DATA
+    // HAPUS DATA (ADMIN)
     public function wargaHapus(string $id)
     {
         Warga::findOrFail($id)->delete();
 
-        return redirect()->route('warga.index')->with('success', 'Data warga berhasil dihapus!');
+        return redirect()->route('warga.index')
+            ->with('success', 'Data warga berhasil dihapus!');
     }
 }
