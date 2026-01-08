@@ -13,30 +13,33 @@ class UserSeeder extends Seeder
     {
         $faker = Faker::create('id_ID');
 
-        // USER UTAMA
-        User::create([
-            'name'     => 'Guest',
-            'email'    => 'guest@example.com',
-            'username' => 'guest',
-            'password' => Hash::make('password'),
-            'status'   => 'aktif',
-        ]);
+        User::updateOrCreate(
+            ['email' => 'guest@example.com'],
+            [
+                'name'       => 'Guest',
+                'username'   => 'guest',
+                'password'   => Hash::make('guest123'),
+                'status'     => 'aktif',
+                'last_login' => now(),
+            ]
+        );
 
-        // 100 USER DUMMY
         foreach (range(1, 100) as $i) {
             $name = $faker->name();
-            $username = strtolower(str_replace(' ', '', $name)) . $i;
+            $username = strtolower(preg_replace('/\s+/', '', $name)) . $i;
 
-            User::create([
-                'name'       => $name,
-                'email'      => "user{$i}@example.com",
-                'username'   => $username,
-                'password'   => Hash::make('password123'),
-                'status'     => $faker->randomElement(['aktif', 'nonaktif']),
-                'last_login' => $faker->optional()->dateTimeBetween('-30 days', 'now'),
-            ]);
+            User::updateOrCreate(
+                ['email' => "user{$i}@example.com"], // kunci unik
+                [
+                    'name'       => $name,
+                    'username'   => $username,
+                    'password'   => Hash::make('password123'),
+                    'status'     => $faker->randomElement(['aktif', 'nonaktif']),
+                    'last_login' => $faker->optional()->dateTimeBetween('-30 days', 'now'),
+                ]
+            );
         }
 
-        $this->command->info("Berhasil membuat 100 user dummy + 1 user Guest!");
+        $this->command->info('Berhasil membuat 1 user Guest + 100 user dummy tanpa duplicate!');
     }
 }
