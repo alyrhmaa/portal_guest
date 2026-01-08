@@ -11,8 +11,25 @@ class BeritaController extends Controller
 {
     public function index()
     {
-        $berita = Berita::with(['kategori', 'media'])->get();
-        return view('pages.berita.index', compact('berita'));
+         $query = Berita::with(['kategori', 'media']);
+
+        // 🔎 Filter Kategori
+        if ($request->filled('kategori')) {
+            $query->where('kategori_id', $request->kategori);
+        }
+
+        // 🔃 Urutkan
+        if ($request->urutkan === 'terlama') {
+            $query->orderBy('created_at', 'asc');
+        } else {
+            // default: terbaru
+            $query->orderBy('created_at', 'desc');
+        }
+
+        $berita = $query->get();
+        $kategori = Kategori::all();
+
+        return view('pages.berita.index', compact('berita', 'kategori'));
     }
 
     public function create()

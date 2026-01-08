@@ -8,7 +8,7 @@
                 <ul class="list-unstyled footer-list">
                     <li>
                         <i class="bi bi-geo-alt-fill me-2"></i>
-                        Desa Contoh, Kecamatan Contoh
+                        Desa Umban Sari, Kecamatan Rumbai Pesisir
                     </li>
                     <li>
                         <i class="bi bi-telephone-fill me-2"></i>

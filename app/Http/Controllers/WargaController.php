@@ -11,7 +11,7 @@ class WargaController extends Controller
     public function index(Request $request)
     {
         $warga = Warga::filter($request->only('search'))
-            ->paginate(5)
+            ->paginate(6)
             ->withQueryString();
 
         return view('pages.warga.index', compact('warga'));

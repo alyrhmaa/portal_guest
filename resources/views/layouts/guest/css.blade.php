@@ -313,5 +313,263 @@
         .btn-pink:hover {
             background: #db548a;
         }
+
+        /* STYLE DATA WARGA */
+        :root {
+            --pink-soft: #f8a1c4;
+            --pink-dark: #f07aa8;
+            --pink-light: #fde4ee;
+        }
+
+        h2 {
+            color: var(--pink-dark);
+        }
+
+        /* Search */
+        .search-input {
+            border-radius: 50px 0 0 50px !important;
+            border: 2px solid var(--pink-soft);
+        }
+
+        .search-btn {
+            border-radius: 0 50px 50px 0 !important;
+        }
+
+        /* Stack Layout */
+        .warga-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .warga-box {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 10px 28px rgba(248, 161, 196, .25);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .warga-header {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--pink-dark);
+            padding-bottom: 10px;
+            border-bottom: 2px dashed var(--pink-light);
+            margin-bottom: 14px;
+        }
+
+        /* Body */
+        .warga-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px 18px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .warga-body div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .warga-body strong {
+            font-size: 12px;
+            color: #999;
+        }
+
+        /* Footer */
+        .warga-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding-top: 16px;
+        }
+
+        .btn-edit {
+            background: #ffd1e6;
+            border: none;
+            border-radius: 20px;
+            padding: 6px 16px;
+            color: #7a003c;
+        }
+
+        .btn-hapus {
+            background: #ff7aa2;
+            border: none;
+            border-radius: 20px;
+            padding: 6px 16px;
+            color: #fff;
+        }
+
+        .btn-primary {
+            background-color: var(--pink-soft) !important;
+            border-color: var(--pink-soft) !important;
+            color: #fff !important;
+        }
+
+        .btn-primary:hover,
+        .btn-primary:focus {
+            background-color: var(--pink-dark) !important;
+            border-color: var(--pink-dark) !important;
+            box-shadow: 0 6px 18px rgba(240, 122, 168, 0.45) !important;
+        }
+
+        /* ===============================
+            SEARCH BUTTON (ICON 🔍)
+           ================================ */
+
+        .search-btn {
+            background-color: var(--pink-soft) !important;
+            border: 2px solid var(--pink-soft) !important;
+            color: #fff !important;
+        }
+
+        .search-btn:hover {
+            background-color: var(--pink-dark) !important;
+            border-color: var(--pink-dark) !important;
+        }
+
+        /* Input focus lebih halus */
+        .search-input:focus {
+            border-color: var(--pink-dark) !important;
+            box-shadow: 0 0 0 0.15rem rgba(248, 161, 196, 0.45) !important;
+        }
+
+        /* BERITA */
+        :root {
+            --pink: #f48fb1;
+            --pink-dark: #ec407a;
+            --pink-light: #fde4ee;
+        }
+
+        .hero-pink {
+            background: linear-gradient(135deg, var(--pink-dark), var(--pink));
+        }
+
+        .bg-light-pink {
+            background-color: var(--pink-light);
+        }
+
+        .text-pink {
+            color: var(--pink-dark) !important;
+        }
+
+        .bg-pink {
+            background: linear-gradient(135deg, var(--pink-dark), var(--pink)) !important;
+        }
+
+        .btn-pink {
+            background: linear-gradient(135deg, var(--pink-dark), var(--pink));
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            transition: .3s;
+        }
+
+        .btn-pink:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(244, 143, 177, .45);
+        }
+
+        .btn-outline-pink {
+            color: var(--pink-dark);
+            border-color: var(--pink);
+        }
+
+        .btn-outline-pink:hover {
+            background-color: var(--pink);
+            color: #fff;
+        }
+
+        .table th {
+            border-bottom: 2px solid var(--pink);
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(244, 143, 177, 0.08);
+        }
+
+        /* =========================================================
+   FIX WARNA BERITA (TANPA GANGGU BAGIAN LAIN)
+   ========================================================= */
+
+        /* Variabel KHUSUS BERITA (tidak pakai :root global) */
+        .berita-page {
+            --berita-pink-main: #ec709f;
+            --berita-pink-dark: #db548a;
+            --berita-pink-soft: #f7c6d9;
+            --berita-pink-light: #fde8f1;
+        }
+
+        /* Hero */
+        .berita-page .hero-pink {
+            background: linear-gradient(135deg,
+                    var(--berita-pink-soft),
+                    var(--berita-pink-main)) !important;
+        }
+
+        /* Background section */
+        .berita-page .bg-light-pink {
+            background-color: var(--berita-pink-light) !important;
+        }
+
+        /* Text */
+        .berita-page .text-pink {
+            color: var(--berita-pink-main) !important;
+        }
+
+        /* Card header */
+        .berita-page .bg-pink {
+            background: linear-gradient(135deg,
+                    var(--berita-pink-main),
+                    var(--berita-pink-dark)) !important;
+            color: #fff !important;
+        }
+
+        /* Button pink */
+        .berita-page .btn-pink {
+            background: linear-gradient(135deg,
+                    var(--berita-pink-main),
+                    var(--berita-pink-dark)) !important;
+            color: #fff !important;
+            border: none !important;
+            border-radius: 12px;
+            transition: all .3s ease;
+        }
+
+        .berita-page .btn-pink:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(236, 112, 159, 0.35);
+        }
+
+        /* Outline pink */
+        .berita-page .btn-outline-pink {
+            color: var(--berita-pink-main) !important;
+            border-color: var(--berita-pink-main) !important;
+        }
+
+        .berita-page .btn-outline-pink:hover {
+            background-color: var(--berita-pink-main) !important;
+            color: #fff !important;
+        }
+
+        /* Table */
+        .berita-page .table th {
+            border-bottom: 2px solid var(--berita-pink-main) !important;
+        }
+
+        .berita-page .table-hover tbody tr:hover {
+            background-color: rgba(236, 112, 159, 0.08) !important;
+        }
+
+        /* Badge kategori */
+        .berita-page .badge.bg-light {
+            background-color: var(--berita-pink-light) !important;
+            color: var(--berita-pink-dark) !important;
+        }
     </style>
 </head>

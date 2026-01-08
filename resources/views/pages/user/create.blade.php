@@ -75,15 +75,7 @@
                                 </div>
                             </div>
 
-                            <div class="d-grid">
-                                <div class="mb-3">
-                                    <label for="status" class="form-label fw-semibold text-pink">Status User</label>
-                                    <select name="status" id="status"
-                                        class="form-select form-select-lg rounded-3 border-pink" required>
-                                        <option value="aktif">Aktif</option>
-                                        <option value="nonaktif">Nonaktif</option>
-                                    </select>
-                                </div>
+                          
                                 <div class="mb-3">
                                     <label for="role" class="form-label fw-semibold text-pink">Role User</label>
                                     <select name="role" id="role"
